@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "django-configuration-management"
+version = "0.1.0"
+description = "A management system for Django configuration"
+license = "MIT"
+readme = "README.md"
+repository = "https://github.com/brno32/..."
+authors = ["Alex Drozd <drozdster@gmail.com>"]
+keywords = ["django", "config", "secrets", "settings"]
+packages = [
+    { include = "django_configuration_management" }
+]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+python-dotenv = "^0.15.0"
+
+[tool.poetry.dev-dependencies]
+pytest = "^5.2"
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
