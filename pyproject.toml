@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "django-configuration-management"
 version = "0.1.0"
-description = "A management system for Django configuration"
+description = "A management system for Django configuration that encrypts your secrets so you can commit them to the repo."
 license = "MIT"
 readme = "README.md"
 repository = "https://github.com/brno32/..."
