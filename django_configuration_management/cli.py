@@ -15,8 +15,6 @@ def upsert_secret(environment):
 
     data[key_name] = {"value": key_value, "secret": True}
 
-    print(data)
-
     dict_to_yml(data, environment)
 
 
@@ -27,13 +25,12 @@ def reveal_secrets(environment):
 
     data = yml_to_dict(environment)
 
-    for key, desc in data.items():
-        is_secret = desc.get("secret")
-
-        if not is_secret:
+    for key, meta in data.items():
+        # Skip non-secret values
+        if type(meta) != dict:
             continue
 
-        value = desc["value"]
+        value = meta["value"]
         decrypted_value = decrypt_value(value)
 
         print(f"{key}={decrypted_value}")

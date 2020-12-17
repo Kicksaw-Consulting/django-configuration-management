@@ -6,12 +6,16 @@ import yaml
 def _validate_yml(data):
     for key, meta in data.items():
         validate_key_name(key)
-        assert (
-            type(meta.get("secret")) == bool
-        ), f"{key} has an invalid row. Missing 'secret'"
-        assert (
-            type(meta.get("value")) == str
-        ), f"{key} has an invalid row. Missing 'value'"
+
+        if type(meta) == dict:
+            secret = meta.get("secret")
+            assert type(secret) == bool, f"{key} has an invalid row. Missing 'secret'"
+            assert (
+                secret
+            ), f"{key} is structured like a secret value, but you've marked it as 'secret: false'. The value of this key can simply be the plain text value."
+            assert (
+                type(meta.get("value")) == str
+            ), f"{key} has an invalid row. Missing 'value'"
 
 
 def yml_to_dict(environment: str):
