@@ -1,21 +1,11 @@
 import click
 
-from django_configuration_management.utils import (
-    decrypt_value,
-    dict_to_yml,
-    gather_user_input,
-    generate_fernet_key,
-    load_env,
-    yml_to_dict,
-)
+from django_configuration_management.secrets import decrypt_value, generate_fernet_key
+from django_configuration_management.utils import gather_user_input, load_env
+from django_configuration_management.yml_utils import dict_to_yml, yml_to_dict
 
 
-@click.group()
-def manage():
-    pass
-
-
-@manage.command("upsert_secret")
+@click.command("upsert_secret")
 @click.option("--environment", default="development", help="Your environment")
 def upsert_secret(environment):
     load_env(environment)
@@ -25,10 +15,12 @@ def upsert_secret(environment):
 
     data[key_name] = {"value": key_value, "secret": True}
 
+    print(data)
+
     dict_to_yml(data, environment)
 
 
-@manage.command("reveal_secrets")
+@click.command("reveal_secrets")
 @click.option("--environment", default="development", help="Your environment")
 def reveal_secrets(environment):
     load_env(environment)
@@ -47,7 +39,7 @@ def reveal_secrets(environment):
         print(f"{key}={decrypted_value}")
 
 
-@manage.command("generate_key")
+@click.command("generate_key")
 def generate_key():
     key = generate_fernet_key()
 
@@ -55,7 +47,3 @@ def generate_key():
     print(
         "Please store this in whichever .env-[environment] file you generated it for under the variable ENC_KEY"
     )
-
-
-def main():
-    manage()
