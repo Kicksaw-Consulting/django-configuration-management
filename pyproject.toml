@@ -1,10 +1,10 @@
 [tool.poetry]
 name = "django-configuration-management"
 version = "0.1.0"
-description = "A management system for Django configuration that encrypts your secrets so you can commit them to the repo."
+description = "A merge conflict-less solution to committing an encrypted configuration to the repo with secrets and non-secrets side-by-side."
 license = "MIT"
 readme = "README.md"
-repository = "https://github.com/brno32/..."
+repository = "https://github.com/brno32/django-configuration-management"
 authors = ["Alex Drozd <drozdster@gmail.com>", "Tim Sabat <tim@visinote.com>"]
 keywords = ["django", "config", "secrets", "settings"]
 packages = [

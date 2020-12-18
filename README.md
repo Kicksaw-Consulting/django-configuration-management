@@ -8,7 +8,7 @@ shouldn't cause much trouble.
 This package is intended to be used with a django project, though it's currently not making use
 of any Django specific features.
 
-Needless to say, this is very early development.
+Needless to say, this is in very early development.
 
 ## Install
 
