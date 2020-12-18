@@ -1,7 +1,7 @@
 from django.conf import settings
 
 from django_configuration_management.utils import load_env, normalize_config_data
-from yml_utils import yml_to_dict
+from django_configuration_management.yml_utils import yml_to_dict
 
 
 def get_config(environment: str):
