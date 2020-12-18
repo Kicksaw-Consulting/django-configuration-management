@@ -4,11 +4,12 @@ from pathlib import Path
 
 from dotenv import load_dotenv
 
-from django_configuration_management.secrets import encrypt_value
+from django_configuration_management.secrets import (decrypt_value,
+                                                     encrypt_value)
 from django_configuration_management.yml_utils import validate_key_name
 
 
-def load_env(environment):
+def load_env(environment: str):
     env_path = Path(".") / f".env-{environment}"
     if os.path.isfile(env_path):
         load_dotenv(dotenv_path=env_path, verbose=True)
@@ -28,3 +29,16 @@ def gather_user_input():
     key_value = getpass("Enter key value: ")
 
     return key_name, encrypt_value(key_value)
+
+
+def normalize_config_data(data: dict):
+    normalized = dict()
+
+    for key, meta in data.items():
+        if type(meta) == dict and meta.get("secret"):
+            value = meta["value"]
+            normalized[key] = decrypt_value(value)
+        else:
+            normalized[key] = meta
+
+    return normalized

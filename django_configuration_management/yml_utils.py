@@ -1,9 +1,13 @@
+import json
 import re
+from pathlib import Path
 
 import yaml
 
 
 def _validate_yml(data):
+    _check_required_keys(data)
+
     for key, meta in data.items():
         validate_key_name(key)
 
@@ -16,6 +20,21 @@ def _validate_yml(data):
             assert (
                 type(meta.get("value")) == str
             ), f"{key} has an invalid row. Missing 'value'"
+
+
+def _check_required_keys(data):
+    required_vars = Path(".") / "config-required.json"
+    with open(required_vars, "r") as file:
+        required_vars = json.load(file)
+
+    missing_keys = []
+    for key in required_vars:
+        if key not in data:
+            missing_keys.append(key)
+
+    assert (
+        len(missing_keys) < 1
+    ), f"The following keys are required. {missing_keys}. Halting"
 
 
 def yml_to_dict(environment: str):
