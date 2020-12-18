@@ -24,8 +24,12 @@ def _validate_yml(data):
 
 def _check_required_keys(data):
     required_vars = Path(".") / "config-required.json"
-    with open(required_vars, "r") as file:
-        required_vars = json.load(file)
+
+    try:
+        with open(required_vars, "r") as file:
+            required_vars = json.load(file)
+    except FileNotFoundError:
+        return
 
     missing_keys = []
     for key in required_vars:
