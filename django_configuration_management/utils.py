@@ -14,10 +14,9 @@ def load_env(environment: str):
         load_dotenv(dotenv_path=env_path, verbose=True)
         return
 
-    print(
+    raise AssertionError(
         f"env not found: {env_path}. This file is required and must contain your ENC_KEY"
     )
-    exit(1)
 
 
 def gather_user_input():
