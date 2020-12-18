@@ -4,8 +4,7 @@ from pathlib import Path
 
 from dotenv import load_dotenv
 
-from django_configuration_management.secrets import (decrypt_value,
-                                                     encrypt_value)
+from django_configuration_management.secrets import decrypt_value, encrypt_value
 from django_configuration_management.yml_utils import validate_key_name
 
 
