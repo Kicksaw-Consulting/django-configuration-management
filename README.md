@@ -40,7 +40,7 @@ And follow the prompts.
 
 ### Insert a non-secret
 
-Simply open the .yml file for the generated stage (the naming scheme is `<environment>-config.yaml`),
+Simply open the .yml file for the generated stage (the naming scheme is `config-<environment>.yaml`),
 and insert a row. It should look like this:
 
 ```yaml

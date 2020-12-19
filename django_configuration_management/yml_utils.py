@@ -43,7 +43,7 @@ def _check_required_keys(data):
 
 def yml_to_dict(environment: str):
     try:
-        with open(f"{environment}-config.yaml", "r") as yml:
+        with open(f"config-{environment}.yaml", "r") as yml:
             loaded: dict = yaml.safe_load(yml)
     except FileNotFoundError:
         loaded = {}
@@ -53,7 +53,7 @@ def yml_to_dict(environment: str):
 
 
 def dict_to_yml(data: dict, environment: str) -> str:
-    with open(f"{environment}-config.yaml", "w+") as yml:
+    with open(f"config-{environment}.yaml", "w+") as yml:
         dumped = yaml.dump(data, yml)
     return dumped
 
