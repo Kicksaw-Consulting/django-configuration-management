@@ -67,9 +67,8 @@ reveal_secrets --environment <your-environment>
 ## Extras
 
 In the root of your django project, you can create a file called `config-required.json`.
-This file should spell out which config keys your django project can have before firing up.
 
-It can be a list or a dictionary. This is useful for validating the presence of your
+The JSON object can be a list or a dictionary. This is useful for validating the presence of your
 keys on start-up.
 
 ## Settings
@@ -96,10 +95,25 @@ the config as a normalized dictionary that's flat and has all secrets decrypted.
 from django_configuration_management import get_config
 
 # config = {"USERNAME": "helloworld", "PASSWORD": "im decrypted}
-config = get_config
+config = get_config("development")
 
 USERNAME = config["USERNAME"]
 # ...
+```
+
+### Using without a .env
+
+If you want to skip using the .env, you can set the optional argument `dotenv_required` to `False`
+when invoking either of the above two methods. Doing so means it then becomes your responsibility
+to load an environment variable called `ENC_KEY` that stores the relevant encryption key for the
+stage you're trying to load.
+
+```python
+# settings.py
+from django_configuration_management import get_config
+
+# Will error out if you didn't load ENC_KEY correctly
+config = get_config("development", dotenv_required=False)
 ```
 
 ---
