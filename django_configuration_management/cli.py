@@ -10,7 +10,7 @@ from django_configuration_management.yml_utils import dict_to_yml, yml_to_dict
 def upsert_secret(environment):
     load_env(environment)
 
-    data = yml_to_dict(environment)
+    data = yml_to_dict(environment, skip_required_checks=True)
     key_name, key_value = gather_user_input()
 
     data[key_name] = {"value": key_value, "secret": True}
@@ -23,7 +23,7 @@ def upsert_secret(environment):
 def reveal_secrets(environment):
     load_env(environment)
 
-    data = yml_to_dict(environment)
+    data = yml_to_dict(environment, skip_required_checks=True)
 
     for key, meta in data.items():
         # Skip non-secret values

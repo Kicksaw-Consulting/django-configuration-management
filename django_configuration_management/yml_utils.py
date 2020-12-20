@@ -5,8 +5,9 @@ from pathlib import Path
 import yaml
 
 
-def _validate_yml(data):
-    _check_required_keys(data)
+def _validate_yml(data, skip_required_checks=False):
+    if not skip_required_checks:
+        _check_required_keys(data)
 
     for key, meta in data.items():
         validate_key_name(key)
@@ -41,14 +42,14 @@ def _check_required_keys(data):
     ), f"The following keys are required. {missing_keys}. Halting"
 
 
-def yml_to_dict(environment: str):
+def yml_to_dict(environment: str, skip_required_checks=False):
     try:
         with open(f"config-{environment}.yaml", "r") as yml:
             loaded: dict = yaml.safe_load(yml)
     except FileNotFoundError:
         loaded = {}
 
-    _validate_yml(loaded)
+    _validate_yml(loaded, skip_required_checks)
     return loaded
 
 
