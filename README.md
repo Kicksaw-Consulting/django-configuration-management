@@ -64,6 +64,16 @@ To show the decrypted values of all the secrets in the console, enter:
 reveal_secrets --environment <your-environment>
 ```
 
+### Re-encrypt a config file
+
+To re-encrypt all secret values for a given environment's config file, pass
+
+```bash
+reencrypt --environment <your-environment> --new-key <your-new-key>
+```
+
+If you do not provide a key, a new one will be generated for you.
+
 ## Extras
 
 In the root of your django project, you can create a file called `config-required.json`.
