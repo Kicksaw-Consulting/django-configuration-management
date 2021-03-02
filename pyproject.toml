@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "django-configuration-management"
-version = "0.2.1"
+version = "0.2.2"
 description = "A merge conflict-less solution to committing an encrypted configuration to the repo with secrets and non-secrets side-by-side."
 license = "MIT"
 readme = "README.md"
