@@ -3,16 +3,21 @@ import os
 from cryptography.fernet import Fernet
 
 
-def encrypt_value(value: str, encoding="utf-8"):
-    fernet = Fernet(os.getenv("ENC_KEY"))
+def encrypt_value(value: str, encoding="utf-8", enc_key=None):
+    print("enc_key", enc_key)
+    if not enc_key:
+        enc_key = os.getenv("ENC_KEY")
+    fernet = Fernet(enc_key)
 
     encrypted = fernet.encrypt(bytes(value, encoding))
 
     return encrypted.decode(encoding)
 
 
-def decrypt_value(value: str, encoding="utf-8"):
-    fernet = Fernet(os.getenv("ENC_KEY"))
+def decrypt_value(value: str, encoding="utf-8", enc_key=None):
+    if not enc_key:
+        enc_key = os.getenv("ENC_KEY")
+    fernet = Fernet(enc_key)
 
     decrypted = fernet.decrypt(bytes(value, encoding))
 
