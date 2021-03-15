@@ -1,9 +1,9 @@
-import json
 import yaml
 
-from pathlib import Path
-
-from django_configuration_management.validation_utils import validate_key_name
+from django_configuration_management.validation_utils import (
+    read_required_vars_file,
+    validate_key_name,
+)
 
 
 def _validate_yml(data, skip_required_checks=False):
@@ -33,12 +33,8 @@ def _validate_yml(data, skip_required_checks=False):
 
 
 def _check_required_keys(data):
-    required_vars = Path(".") / "config-required.json"
-
-    try:
-        with open(required_vars, "r") as file:
-            required_vars = json.load(file)
-    except FileNotFoundError:
+    required_vars = read_required_vars_file()
+    if not required_vars:
         return
 
     missing_keys = []
@@ -51,25 +47,6 @@ def _check_required_keys(data):
     assert (
         len(missing_keys) < 1
     ), f"The following keys are required. {missing_keys}. Halting"
-
-
-def check_aws_required_keys(secret_object: dict, secret_name: str):
-    required_vars = Path(".") / "config-required.json"
-
-    try:
-        with open(required_vars, "r") as file:
-            required_vars = json.load(file)
-    except FileNotFoundError:
-        return
-
-    missing_keys = []
-    for key in required_vars.pop("aws_secrets"):
-        if key not in secret_object:
-            missing_keys.append(key)
-
-    assert (
-        len(missing_keys) < 1
-    ), f"The following keys are required in AWS Secret Manager for {secret_name}. {missing_keys}. Halting"
 
 
 def yml_to_dict(environment: str, skip_required_checks=False):
