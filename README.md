@@ -50,6 +50,30 @@ PASSWORD:
   value: gAAAAABf2_kxEgWXQzJ0SlRmDy6lbXe-d3dWD68W4aM26yiA0EO2_4pA5FhV96uMWCLwpt7N6Y32zXQq-gTJ3sREbh1GOvNh5Q==
 ```
 
+### Insert an AWS Secret Manager secret
+
+Add a row where the key name is your secret name in AWS Secret Manager, with a sub-key value pair of
+`use_aws: true`. It should look like this:
+
+```yaml
+secrets/integrations/aws_secret:
+  use_aws: true
+```
+
+The secret in your AWS instance will need to conform to the naming patterns used elsewhere in 
+this repo, e.g., a properly structured AWS Secret Manager secret will look like
+
+```json
+{
+  "AWS_SECRET": "I'm a secret"
+}
+```
+
+The keys of this object will be translated into python variables for the Django settings
+module in much the same way the keys of the local yaml will be.
+
+Your AWS credentials must also be set up correctly to make API calls to AWS.
+
 ### Manually editing the file
 
 You can change the values of non-secrets by hand, as well as the keynames, but clearly you must
@@ -80,6 +104,10 @@ In the root of your django project, you can create a file called `config-require
 
 The JSON object can be a list or a dictionary. This is useful for validating the presence of your
 keys on start-up.
+
+For validating secrets that come from AWS Secret Manager, nest your keys in an object
+under `aws_secrets`. This lets the library know to validate these keys at a later step once
+they've been pulled down from the AWS API.
 
 ## Settings
 
