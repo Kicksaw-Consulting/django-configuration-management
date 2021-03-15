@@ -4,6 +4,9 @@ from pathlib import Path
 
 from dotenv import load_dotenv
 
+from django_configuration_management.aws_utils import (
+    parse_secret,
+)
 from django_configuration_management.secrets import decrypt_value, encrypt_value
 from django_configuration_management.yml_utils import validate_key_name
 
@@ -36,6 +39,9 @@ def normalize_config_data(data: dict):
         if type(meta) == dict and meta.get("secret"):
             value = meta["value"]
             normalized[key] = decrypt_value(value)
+        elif type(meta) == dict and meta.get("use_aws"):
+            secret_object = parse_secret(key)
+            normalized = {**normalized, **secret_object}
         else:
             normalized[key] = meta
 

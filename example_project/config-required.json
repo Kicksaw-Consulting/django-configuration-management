@@ -1,4 +1,7 @@
 {
     "USERNAME": "The username",
-    "PASSWORD": "The password (should be encrypted)"
+    "PASSWORD": "The password (should be encrypted)",
+    "aws_secrets": {
+        "AWS_SECRET": "a value from AWS Secret Manager"
+    }
 }

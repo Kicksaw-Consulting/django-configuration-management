@@ -1,10 +1,14 @@
 import click
 
+from django_configuration_management.aws_utils import (
+    parse_secret,
+)
 from django_configuration_management.secrets import (
     decrypt_value,
     encrypt_value,
     generate_fernet_key,
 )
+from django_configuration_management.validation_utils import validate_key_name
 from django_configuration_management.utils import gather_user_input, load_env
 from django_configuration_management.yml_utils import dict_to_yml, yml_to_dict
 
@@ -34,10 +38,15 @@ def reveal_secrets(environment):
         if type(meta) != dict:
             continue
 
-        value = meta["value"]
-        decrypted_value = decrypt_value(value)
-
-        print(f"{key}={decrypted_value}")
+        if "value" in meta:
+            value = meta["value"]
+            secret = decrypt_value(value)
+            print(f"{key}={secret}")
+        if "use_aws" in meta:
+            secret_object = parse_secret(key)
+            for secret_key in secret_object:
+                secret = secret_object[secret_key]
+                print(f"{secret_key}={secret}")
 
 
 @click.command("generate_key")
