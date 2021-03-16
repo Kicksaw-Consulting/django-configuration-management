@@ -4,3 +4,5 @@ PASSWORD:
 USERNAME: testusername
 secrets/integrations/aws_secret:
   use_aws: true
+  secret_keys:
+    - AWS_SECRET
