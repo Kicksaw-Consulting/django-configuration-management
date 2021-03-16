@@ -3,7 +3,6 @@ import base64
 import json
 
 from django_configuration_management.validation_utils import (
-    read_required_vars_file,
     validate_key_name,
 )
 
@@ -21,24 +20,27 @@ def get_secret(secret_name):
     return secret
 
 
-def parse_secret(secret_name: str) -> dict:
+def parse_secret(secret_name: str, secret_keys: list) -> dict:
     secret_object = json.loads(get_secret(secret_name))
-    for secret_key in secret_object:
+    secrets = dict()
+    for secret_key in secret_keys:
         validate_key_name(secret_key)
-    _check_aws_required_keys(secret_object, secret_name)
-    return secret_object
+        assert (
+            secret_key in secret_object
+        ), f"{secret_name} doesn't contain the key {secret_key}"
+        secrets[secret_key] = secret_object[secret_key]
+    return secrets
 
 
-def _check_aws_required_keys(secret_object: dict, secret_name: str):
-    required_vars = read_required_vars_file()
-    if not required_vars:
-        return
+def pull_aws_config_data(data: dict):
+    pulled = dict()
+    for key, meta in data.items():
+        secret_keys = meta["secret_keys"]
 
-    missing_keys = []
-    for key in required_vars.pop("aws_secrets"):
-        if key not in secret_object:
-            missing_keys.append(key)
+        assert (
+            type(secret_keys) == list and len(secret_keys) > 0
+        ), f"{key} must have a list of secret_keys"
 
-    assert (
-        len(missing_keys) < 1
-    ), f"The following keys are required in AWS Secret Manager for {secret_name}. {missing_keys}. Halting"
+        secret_object = parse_secret(key, secret_keys)
+        pulled = {**pulled, **secret_object}
+    return pulled

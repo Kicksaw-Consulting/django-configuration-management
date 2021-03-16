@@ -4,3 +4,5 @@ PASSWORD:
 USERNAME: whatsup1994
 secrets/integrations/aws_secret:
   use_aws: true
+  secret_keys:
+    - AWS_SECRET
