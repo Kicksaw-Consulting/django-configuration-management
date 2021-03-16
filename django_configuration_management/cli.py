@@ -1,5 +1,6 @@
 import click
 
+from django_configuration_management.aws_utils import pull_aws_config_data
 from django_configuration_management.secrets import (
     decrypt_value,
     encrypt_value,
@@ -27,17 +28,19 @@ def upsert_secret(environment):
 def reveal_secrets(environment):
     load_env(environment)
 
-    data = yml_to_dict(environment, skip_required_checks=True)
+    local_secrets, aws_secrets = yml_to_dict(environment, skip_required_checks=True)
 
-    for key, meta in data.items():
+    for key, meta in local_secrets.items():
         # Skip non-secret values
         if type(meta) != dict:
             continue
 
         value = meta["value"]
-        decrypted_value = decrypt_value(value)
+        secret = decrypt_value(value)
+        print(f"{key}={secret}")
 
-        print(f"{key}={decrypted_value}")
+    for key, secret in pull_aws_config_data(aws_secrets).items():
+        print(f"{key}={secret}")
 
 
 @click.command("generate_key")

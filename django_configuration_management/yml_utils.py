@@ -1,8 +1,9 @@
-import json
-import re
-from pathlib import Path
-
 import yaml
+
+from django_configuration_management.validation_utils import (
+    read_required_vars_file,
+    validate_key_name,
+)
 
 
 def _validate_yml(data, skip_required_checks=False):
@@ -11,25 +12,22 @@ def _validate_yml(data, skip_required_checks=False):
 
     for key, meta in data.items():
         validate_key_name(key)
-
         if type(meta) == dict:
             secret = meta.get("secret")
-            assert type(secret) == bool, f"{key} has an invalid row. Missing 'secret'"
-            assert (
-                secret
-            ), f"{key} is structured like a secret value, but you've marked it as 'secret: false'. The value of this key can simply be the plain text value."
-            assert (
-                type(meta.get("value")) == str
-            ), f"{key} has an invalid row. Missing 'value'"
+            if secret is not None:
+                assert (
+                    secret
+                ), f"{key} is structured like a secret value, but you've marked it as 'secret: false'. The value of this key can simply be the plain text value."
+                assert (
+                    type(meta.get("value")) == str
+                ), f"{key} has an invalid row. Missing 'value'"
+            else:
+                raise AssertionError(f"{key} has an invalid row. Missing 'secret_name'")
 
 
 def _check_required_keys(data):
-    required_vars = Path(".") / "config-required.json"
-
-    try:
-        with open(required_vars, "r") as file:
-            required_vars = json.load(file)
-    except FileNotFoundError:
+    required_vars = read_required_vars_file()
+    if not required_vars:
         return
 
     missing_keys = []
@@ -49,8 +47,9 @@ def yml_to_dict(environment: str, skip_required_checks=False):
     except FileNotFoundError:
         loaded = {}
 
-    _validate_yml(loaded, skip_required_checks)
-    return loaded
+    local_secrets, aws_secrets = separate_aws_secrets(loaded)
+    _validate_yml(local_secrets, skip_required_checks)
+    return local_secrets, aws_secrets
 
 
 def dict_to_yml(data: dict, environment: str) -> str:
@@ -59,7 +58,13 @@ def dict_to_yml(data: dict, environment: str) -> str:
     return dumped
 
 
-def validate_key_name(key_name: str):
-    assert re.search(
-        "^[A-Z0-9]+(?:_[A-Z0-9]+)*$", key_name
-    ), f"Invalid key name {key_name}. Keys must consist only of uppercase letters and underscore"
+def separate_aws_secrets(config: dict):
+    aws = dict()
+    local = dict()
+    for key, meta in config.items():
+        is_aws = type(meta) == dict and meta.get("use_aws")
+        if is_aws:
+            aws[key] = meta
+        else:
+            local[key] = meta
+    return local, aws

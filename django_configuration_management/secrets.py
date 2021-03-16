@@ -4,7 +4,6 @@ from cryptography.fernet import Fernet
 
 
 def encrypt_value(value: str, encoding="utf-8", enc_key=None):
-    print("enc_key", enc_key)
     if not enc_key:
         enc_key = os.getenv("ENC_KEY")
     fernet = Fernet(enc_key)

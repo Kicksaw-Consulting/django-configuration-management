@@ -4,6 +4,7 @@ from pathlib import Path
 
 from dotenv import load_dotenv
 
+
 from django_configuration_management.secrets import decrypt_value, encrypt_value
 from django_configuration_management.yml_utils import validate_key_name
 
@@ -31,12 +32,10 @@ def gather_user_input():
 
 def normalize_config_data(data: dict):
     normalized = dict()
-
     for key, meta in data.items():
-        if type(meta) == dict and meta.get("secret"):
+        if type(meta) == dict:
             value = meta["value"]
             normalized[key] = decrypt_value(value)
         else:
             normalized[key] = meta
-
     return normalized
