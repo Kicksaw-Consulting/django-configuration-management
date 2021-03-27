@@ -18,6 +18,8 @@ pyyaml = "^5.3.1"
 cryptography = "^3.3.1"
 django = "^3.1.4"
 boto3 = "^1.17.27"
+PyGithub = "^1.54.1"
+PyNaCl = "^1.4.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
@@ -32,4 +34,5 @@ build-backend = "poetry.masonry.api"
 upsert_secret = 'django_configuration_management.cli:upsert_secret'
 reveal_secrets = 'django_configuration_management.cli:reveal_secrets'
 generate_key = 'django_configuration_management.cli:generate_key'
+github_secrets = 'django_configuration_management.cli:github_secrets'
 reencrypt = 'django_configuration_management.cli:reencrypt'
