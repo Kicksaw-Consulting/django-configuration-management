@@ -107,6 +107,9 @@ def github_secrets():
         - Save to dictionary
     5. Push secrets to github repo
     """
+    print(
+        "WARNING! This is an expiremental feature and is likely to change with future releases"
+    )
     # check for the file right away
     with open(
         "config-github.json",
