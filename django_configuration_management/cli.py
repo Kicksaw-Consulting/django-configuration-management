@@ -107,8 +107,17 @@ def github_secrets():
         - Save to dictionary
     5. Push secrets to github repo
     """
+    # check for the file right away
+    with open(
+        "config-github.json",
+    ) as github_config_file:
+        github_config = json.load(github_config_file)
+
     key = "GITHUB_ACCESS_TOKEN"
     github_access_token = os.getenv(key)
+
+    assert github_access_token, f"Environment variable {key} not set"
+
     owner_repo_array = owner_and_repo()
     owner = owner_repo_array[0]
     repo_name = owner_repo_array[1]
@@ -117,17 +126,13 @@ def github_secrets():
     repo_key = repo_key_info[0]
     key_id = repo_key_info[1]
 
-    github_config_file = open(
-        "config-github.json",
-    )
-    github_config = json.load(github_config_file)
     user_provided_secrets = {}
 
     # Prompt user for secret and encrypt
     for key in github_config:
         prompt = f"Please provide the secret for key: {key}"
-        repo_secret = input(prompt + " (or `next`):\n")
-        if repo_secret == "next":
+        repo_secret = input(prompt + " (or press enter to skip):\n")
+        if not repo_secret:
             continue
         encrypted_secret = encrypt_secret(repo_key, repo_secret)
         user_provided_secrets[key] = encrypted_secret
