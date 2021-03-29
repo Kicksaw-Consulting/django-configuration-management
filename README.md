@@ -62,7 +62,7 @@ secrets/integrations/aws_secret:
     - AWS_SECRET
 ```
 
-The secret in your AWS instance will need to conform to the naming patterns used elsewhere in 
+The secret in your AWS instance will need to conform to the naming patterns used elsewhere in
 this repo, e.g., a properly structured AWS Secret Manager secret will look like
 
 ```json
@@ -100,6 +100,31 @@ reencrypt --environment <your-environment> --new-key <your-new-key>
 ```
 
 If you do not provide a key, a new one will be generated for you.
+
+## Configuring repository secrets from cli using `github_secrets`
+
+To set secrets on a remote repository:
+
+1. Create a `GITHUB_ACCESS_TOKEN` variable in your local shell environment.
+   This variable should contain your github personal access token
+   (https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token).
+2. `cd` into the local repository that you would like to set secrets for.
+3. Create a new file named `config-github.json` and add a JSON object where each
+   key is the name of the secret you would like to add to the remote repository.
+   The value can be an empty string or a brief description about the key.
+   e.g.
+   ```json
+   {
+     "AWS_ACCESS_KEY_ID": "Description",
+     "AWS_SECRET_ACCESS_KEY": "Description"
+   }
+   ```
+4. Run `github_secrets` to start running the script.
+5. This will run the script and prompt you to enter a value for each secret key in
+   the `config-github.json` file.
+6. You can press `enter` to skip providing a value for any secret.
+7. Once you have either provided a value or skipped all secrets in the `config-github.json` file,
+   the script will push the secrets to the remote repository of the current working directory.
 
 ## Extras
 
