@@ -21,3 +21,11 @@ jobs:
       - name: Pytest
         run: |
           cd tests && poetry run pytest
+      - name: Slack Notifications
+        uses: Kicksaw-Consulting/notify-slack-action@master
+        if: always()
+        with:
+          status: ${{ job.status }}
+          notify_when: "failure"
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
