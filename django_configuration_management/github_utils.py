@@ -8,7 +8,7 @@ from nacl.public import SealedBox
 import nacl.utils
 
 
-def owner_and_repo():
+def get_remote_repo():
     result = subprocess.Popen("git remote -v", shell=True, stdout=subprocess.PIPE)
 
     if result is None:
@@ -19,7 +19,13 @@ def owner_and_repo():
     stripped = repo_result_w_byte.decode(
         "utf-8-sig"
     ).rstrip()  # Remove byte order mark and new line
-    owner_and_repo = re.search("[A-Za-z0-9]+\/[A-Za-z0-9_-]+\.git", stripped).group()
+
+    return stripped
+
+
+def owner_and_repo():
+    repo_url = get_remote_repo()
+    owner_and_repo = re.search("[A-Za-z0-9]+\/[A-Za-z0-9_-]+\.git", repo_url).group()
     owner_repo_array = owner_and_repo.split("/")
     owner = owner_repo_array[0]
     repo_name = owner_repo_array[1].split(".")[0]
