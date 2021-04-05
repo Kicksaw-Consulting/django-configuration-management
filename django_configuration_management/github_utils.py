@@ -2,10 +2,9 @@ import requests
 import json
 import subprocess
 import re
+
 from base64 import b64encode
 from nacl import encoding, public
-from nacl.public import SealedBox
-import nacl.utils
 
 
 def get_remote_repo():
