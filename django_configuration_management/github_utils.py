@@ -25,7 +25,7 @@ def get_remote_repo():
 
 def owner_and_repo():
     repo_url = get_remote_repo()
-    owner_and_repo = re.search("[A-Za-z0-9-_]+\/[A-Za-z0-9_-]+\.git", repo_url).group()
+    owner_and_repo = re.search(r"[A-Za-z0-9_-]+/[A-Za-z0-9_-]+.git", repo_url).group()
     owner_repo_array = owner_and_repo.split("/")
     owner = owner_repo_array[0]
     repo_name = owner_repo_array[1].split(".")[0]
@@ -48,6 +48,11 @@ def repository_info(github_access_token, owner, repo_name):
         headers=headers,
     ).text
     repo_public_key_dict = json.loads(repo_public_key_string)
+
+    assert (
+        "key" in repo_public_key_dict
+    ), f"Repo {repo_name} with owner {owner} encountered {repo_public_key_dict['message']}"
+
     repo_key = repo_public_key_dict["key"]
     key_id = repo_public_key_dict["key_id"]
     return [repo_key, key_id]
