@@ -25,7 +25,7 @@ def get_remote_repo():
 
 def owner_and_repo():
     repo_url = get_remote_repo()
-    owner_and_repo = re.search("[A-Za-z0-9]+\/[A-Za-z0-9_-]+\.git", repo_url).group()
+    owner_and_repo = re.search("[A-Za-z0-9-_]+\/[A-Za-z0-9_-]+\.git", repo_url).group()
     owner_repo_array = owner_and_repo.split("/")
     owner = owner_repo_array[0]
     repo_name = owner_repo_array[1].split(".")[0]
