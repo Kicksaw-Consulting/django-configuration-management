@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "django-configuration-management"
-version = "0.3.4"
+version = "0.3.5"
 description = "A merge conflict-less solution to committing an encrypted configuration to the repo with secrets and non-secrets side-by-side."
 license = "MIT"
 readme = "README.md"
@@ -36,3 +36,4 @@ reveal_secrets = 'django_configuration_management.cli:reveal_secrets'
 generate_key = 'django_configuration_management.cli:generate_key'
 github_secrets = 'django_configuration_management.cli:github_secrets'
 reencrypt = 'django_configuration_management.cli:reencrypt'
+iam_role = 'django_configuration_management.cli:iam_role'

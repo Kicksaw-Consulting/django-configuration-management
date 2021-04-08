@@ -1,0 +1,11 @@
+{
+  "namespace": "django-configuration-management",
+  "purpose": "ci-cd-user",
+  "policies": [
+    {
+      "path": "deploy-policy.json",
+      "description": "A policy document",
+      "purpose": "bucket-get"
+    }
+  ]
+}

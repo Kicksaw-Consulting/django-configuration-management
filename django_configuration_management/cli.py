@@ -17,6 +17,8 @@ from django_configuration_management.github_utils import (
 )
 from django_configuration_management.yml_utils import dict_to_yml, yml_to_dict
 
+from django_configuration_management.iam_script import configure_iam
+
 
 @click.command("upsert_secret")
 @click.option("-e", "--environment", default="development", help="Your environment")
@@ -143,3 +145,11 @@ def github_secrets():
     push_secrets_to_github(
         owner, repo_name, key_id, user_provided_secrets, github_access_token
     )
+
+
+@click.command("iam_role")
+def iam_role():
+    print(
+        "WARNING! This is an untested, expiremental feature. You use this at your own peril!"
+    )
+    configure_iam()
