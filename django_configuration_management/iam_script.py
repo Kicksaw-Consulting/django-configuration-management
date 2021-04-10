@@ -47,11 +47,19 @@ def configure_iam():
 
     for policy_arn in policies_to_attach:
         iam.attach_user_policy(UserName=username, PolicyArn=policy_arn)
-    for policy_arn in policies_to_update:
-        with open(policy_arn["path"]) as file:
+    for policy in policies_to_update:
+        policy_arn = policy["arn"]
+        results = iam.list_policy_versions(PolicyArn=policy_arn)
+        versions = results["Versions"]
+        for idx, version in enumerate(versions):
+            version_id = version["VersionId"]
+            if idx == 4:
+                iam.delete_policy_version(PolicyArn=policy_arn, VersionId=version_id)
+
+        with open(policy["path"]) as file:
             policy_json = file.read()
         response = iam.create_policy_version(
-            PolicyArn=policy_arn["arn"], PolicyDocument=policy_json, SetAsDefault=True
+            PolicyArn=policy_arn, PolicyDocument=policy_json, SetAsDefault=True
         )
 
     with open("config-iam.json", "w") as file:
