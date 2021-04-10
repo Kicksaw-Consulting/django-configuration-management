@@ -1,11 +1,13 @@
 {
   "namespace": "django-configuration-management",
-  "purpose": "ci-cd-user",
+  "purpose": "ci-cd-user2",
   "policies": [
     {
       "path": "deploy-policy.json",
       "description": "A policy document",
-      "purpose": "bucket-get"
+      "purpose": "bucket-getter3",
+      "arn": "arn:aws:iam::748237678419:policy/django-configuration-management-bucket-getter3"
     }
-  ]
+  ],
+  "arn": "arn:aws:iam::748237678419:user/django-configuration-management-ci-cd-user2"
 }
