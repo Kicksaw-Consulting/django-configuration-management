@@ -76,7 +76,7 @@ def reencrypt(environment, new_key):
     if not new_key:
         new_key = generate_fernet_key()
 
-    data = yml_to_dict(environment, skip_required_checks=True)
+    data, _ = yml_to_dict(environment, skip_required_checks=True)
 
     for key, meta in data.items():
         # Skip non-secret values
