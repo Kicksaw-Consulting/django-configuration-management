@@ -38,12 +38,16 @@ def configure_iam():
 
     username = f"{namespace}-{iam_user_purpose}"
 
+    access_key = None
     if not user_exists:
         response = iam.create_user(
             UserName=username,
         )
         arn = response["User"]["Arn"]
         json_data["arn"] = arn
+
+        response = iam.create_access_key(UserName=username)
+        access_key = response["AccessKey"]
 
     for policy_arn in policies_to_attach:
         iam.attach_user_policy(UserName=username, PolicyArn=policy_arn)
@@ -64,3 +68,5 @@ def configure_iam():
 
     with open("config-iam.json", "w") as file:
         json.dump(json_data, file, indent=2)
+
+    return access_key
