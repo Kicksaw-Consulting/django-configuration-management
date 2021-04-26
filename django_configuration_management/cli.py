@@ -9,7 +9,7 @@ from django_configuration_management.secrets import (
     generate_fernet_key,
 )
 from django_configuration_management.utils import gather_user_input, load_env
-from django_configuration_management.github_utils import (
+from django_configuration_management.github_script import (
     owner_and_repo,
     repository_info,
     encrypt_secret,
