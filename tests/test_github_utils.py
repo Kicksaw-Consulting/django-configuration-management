@@ -1,8 +1,8 @@
 import pytest
 
-from django_configuration_management.github_utils import owner_and_repo
+from django_configuration_management.github_script import owner_and_repo
 
-import django_configuration_management.github_utils as github_utils_module
+import django_configuration_management.github_script as github_script_module
 
 
 @pytest.mark.parametrize(
@@ -34,7 +34,7 @@ import django_configuration_management.github_utils as github_utils_module
     ],
 )
 def test_owner_and_repo(monkeypatch, url, owner, repo):
-    monkeypatch.setattr(github_utils_module, "get_remote_repo", lambda *args: url)
+    monkeypatch.setattr(github_script_module, "get_remote_repo", lambda *args: url)
 
     results = owner_and_repo()
 
