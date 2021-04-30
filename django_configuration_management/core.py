@@ -44,7 +44,7 @@ def load_django(
     post_setup_hook_kwargs: dict = {},
 ):
     """
-    For use in scripts that invokved via manage.py, e.g., lambda environments, non-management command CLI scripts, etc
+    For use in scripts that are invoked via manage.py, e.g., lambda environments, non-management command CLI scripts, etc
     """
     pre_setup_hook(*pre_setup_hook_args, **pre_setup_hook_kwargs)
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", path_to_settings_module)
