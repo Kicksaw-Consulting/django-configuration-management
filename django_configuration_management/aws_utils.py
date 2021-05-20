@@ -24,7 +24,6 @@ def parse_secret(secret_name: str, secret_keys: list) -> dict:
     secret_object = json.loads(get_secret(secret_name))
     secrets = dict()
     for secret_key in secret_keys:
-        validate_key_name(secret_key)
         assert (
             secret_key in secret_object
         ), f"{secret_name} doesn't contain the key {secret_key}"
