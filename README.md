@@ -1,3 +1,7 @@
+ATTENTION: this project has been simplified and reworked to be django-independent. A separate library for using AWS is forthcoming
+
+https://github.com/Kicksaw-Consulting/python-configuration-management
+
 # Quick start
 
 This package features an opinionated configuration management system, focused on combining both secret
