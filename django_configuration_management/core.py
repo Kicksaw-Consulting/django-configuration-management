@@ -12,7 +12,7 @@ from django_configuration_management.utils import (
 from django_configuration_management.yml_utils import yml_to_dict
 
 
-def get_config(environment: str, dotenv_required=True):
+def get_config(environment: str, dotenv_required=True, region_name=None):
     try:
         load_env(environment)
     except AssertionError as error:
@@ -22,13 +22,17 @@ def get_config(environment: str, dotenv_required=True):
     local_secrets, aws_secrets = yml_to_dict(environment)
 
     normalized_local_secrets = normalize_config_data(local_secrets)
-    pulled_aws_secrets = pull_aws_config_data(aws_secrets)
+    pulled_aws_secrets = pull_aws_config_data(aws_secrets, region_name=region_name)
 
     return {**normalized_local_secrets, **pulled_aws_secrets}
 
 
-def inject_config(environment: str, settings_module: settings, dotenv_required=True):
-    config = get_config(environment, dotenv_required)
+def inject_config(
+    environment: str, settings_module: settings, dotenv_required=True, region_name=None
+):
+    config = get_config(
+        environment, dotenv_required=dotenv_required, region_name=region_name
+    )
 
     for key, value in config.items():
         setattr(settings_module, key, value)

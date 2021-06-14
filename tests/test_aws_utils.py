@@ -5,7 +5,9 @@ import django_configuration_management.aws_utils as aws_utils_module
 
 def test_pull_aws_config_data(monkeypatch):
     monkeypatch.setattr(
-        aws_utils_module, "parse_secret", lambda *args: {"AWS_SECRET": "im a secret"}
+        aws_utils_module,
+        "parse_secret",
+        lambda *args, **kwargs: {"AWS_SECRET": "im a secret"},
     )
     fake_data = {
         "some/path/to/secret": {
